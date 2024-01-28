@@ -10,11 +10,16 @@
   <body>
     <form class="form">
       <input type="text" name="query" placeholder="Search images..." />
-      <button type="submit">Search</button>
+      <button class="search-btn" type="submit">Search</button>
     </form>
-    <div class="loader-container"><span class="loader"></span></div>
-
     <ul class="gallery"></ul>
+    <div class="overlay">
+      <div class="loader-container"><span class="loader"></span></div>
+    </div>
+    <button type="button" class="load-btn is-hidden" data-action="load-more">
+      <span class="preloader load-more-loader is-hidden"></span>
+      <span>Load more</span>
+    </button>
     <script type="module" src="./main.js"></script>
   </body>
 </html>
