@@ -2,9 +2,9 @@ import buttonService from "./js/servises/buttonService.js";
 import isiToast from './js/servises/isiToast.js';
 import { showLoader, hideLoader } from "./js/servises/loaderService.js"
 import { refs } from './js/templates/refs.js';
-import createItemsMarkup from './js/templates/createItemsMarkup.js';
+import renderItemsMarkup from './js/templates/renderItemsMarkup.js';
 import { searchImageByName } from './js/servises/imgApi.js';
-import { onLightBox } from "./js/servises/lightBox.js";
+import { lightbox } from "./js/servises/lightBox.js";
 
 const queryParams = {
   query: '',
@@ -13,20 +13,21 @@ const queryParams = {
   per_page: 30,
 };
 
-const { query } = refs.searchForm.elements;
-query.addEventListener('mouseenter', onMouseOver);
+refs.searchForm.addEventListener('submit', handleSearch);
+hideLoader(refs.loaderModal);
 
-function onMouseOver() {
+const { query } = refs.searchForm.elements;
+query.addEventListener('mouseenter', onMouse);
+
+function onMouse() {
   refs.searchForm.addEventListener('submit', handleSearch);
   buttonService.enableBtn(refs.searchBtn);
 }
 
-refs.searchForm.addEventListener('submit', handleSearch);
-hideLoader(refs.loaderModal);
-
 async function handleSearch(event) {
   buttonService.disableBtn(refs.searchBtn);
   showLoader(refs.loaderModal);
+  buttonService.hide(refs.loadMoreBtn);
   event.preventDefault();
 
   refs.resultContainer.innerHTML = '';
@@ -54,13 +55,14 @@ async function handleSearch(event) {
     if (hits.length > 0 && hits.length !== totalHits) {
       refs.loadMoreBtn.addEventListener('click', handleLoadMore);
       buttonService.show(refs.loadMoreBtn);
-      } else {
+    } else {
+      isiToast.endOfSearch();
       buttonService.hide(refs.loadMoreBtn);
       buttonService.enableBtn(refs.searchBtn);
     }
 
-    createItemsMarkup(hits, refs.resultContainer);
-    onLightBox();
+    renderItemsMarkup(hits, refs.resultContainer);
+    lightbox.refresh();
   } catch (error) {
     console.error('Error fetching images:', error);
     isiToast.apiError();
@@ -72,15 +74,14 @@ async function handleSearch(event) {
 
 async function handleLoadMore() {
   showLoader(refs.loaderModal);
-  
   buttonService.disable(refs.loadMoreBtn, refs.preloader);
   queryParams.page += 1;
 
   try {
     const { hits } = await searchImageByName(queryParams);
-    createItemsMarkup(hits, refs.resultContainer);
+    renderItemsMarkup(hits, refs.resultContainer);
 
-    onLightBox();
+   lightbox.refresh();
 
     const elementHeight = document.querySelector('.gallery-item').getBoundingClientRect().height;
     window.scrollBy({
@@ -96,10 +97,12 @@ async function handleLoadMore() {
     buttonService.enable(refs.loadMoreBtn, refs.preloader);
 
     if (queryParams.page === queryParams.maxPage) {
-      buttonService.hide(refs.loadMoreBtn);
       refs.loadMoreBtn.removeEventListener('click', handleLoadMore);
+      query.removeEventListener('mouseenter', onMouse);
+      buttonService.hide(refs.loadMoreBtn);
       buttonService.enableBtn(refs.searchBtn);
-      isiToast.endOfSearch();
+      isiToast.endOfSearch();  
     }
+
   }
 }

@@ -1,4 +1,4 @@
-export default function createItemsMarkup(hits, resultContainer) {
+export default function renderItemsMarkup(hits, resultContainer) {
   const markup = hits
     .map(
       ({

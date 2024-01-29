@@ -5,8 +5,8 @@ const API_KEY = '41902273-a1675a4e2dad43acb6fd87e89';
 
 // https://pixabay.com/api?key=41902273-a1675a4e2dad43acb6fd87e89&q=sky&per_page=9&page=1&image_type=photo&orientation=horizontal&safesearch=true
 
-function searchImageByName({ query, page = 1, per_page }) {
-  return axios
+async function searchImageByName({ query, page = 1, per_page }) {
+  const response = await axios
     .get(`${BASE_URL}/`, {
       params: {
         key: API_KEY,
@@ -18,7 +18,7 @@ function searchImageByName({ query, page = 1, per_page }) {
         safesearch: true,
       },
     })
-    .then(({ data }) => data);
+  return response.data;
 }
 
 export { searchImageByName };
