@@ -12,7 +12,7 @@ input {
     
     border-radius: 4px;
     border: 2px solid #808080;
-    transition: all 0.2s ease-in-out;
+    transition: all 200ms ease-in-out;
 }
     
 input:hover {
@@ -108,7 +108,7 @@ p {
 }
 
 .overlay {
-    display: none;
+    visibility: hidden;
     position: fixed;
     top: 0;
     left: 0;
@@ -117,12 +117,12 @@ p {
     background-color: rgba(140, 201, 247, 0.5);
     z-index: 998;
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.overlay.show {
-    display: flex;
+.show {
     opacity: 1;
+    visibility: visible;
 }
 
 .loader-container {
