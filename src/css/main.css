@@ -145,7 +145,7 @@ p {
     border-radius: 50%;
     position: absolute;
     inset: 0;
-    box-shadow: 0 0 24px 4px rgba(27, 155, 215, 0.3) inset;
+    box-shadow: 0 0 24px 4px rgba(255, 255, 255, 0.995) inset;
 }
 
 .loader:after {
