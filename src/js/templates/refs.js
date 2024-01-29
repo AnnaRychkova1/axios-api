@@ -5,4 +5,5 @@ export const refs = {
   searchBtn: document.querySelector('.search-btn'),
   loadMoreBtn: document.querySelector('.load-btn'),
   preloader: document.querySelector('.preloader'),
+  scrollBtn: document.querySelector('.scroll-btn'),
 };

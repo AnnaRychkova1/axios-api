@@ -106,3 +106,16 @@ async function handleLoadMore() {
 
   }
 }
+
+window.addEventListener('scroll', scrollUp);
+
+function scrollUp() {
+  if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
+    buttonService.show(refs.scrollBtn);
+  } else {
+    buttonService.hide(refs.scrollBtn);
+  }
+}
+refs.scrollBtn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
